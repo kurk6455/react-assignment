@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import {DetailsContextProvider} from '../components/DetailsContextProvider'
-import {Layout} from '../components/Layout'
-import {AdoptionForm} from '../components/AdoptionForm'
-import {AdoptionTable} from '../components/AdoptionTable'
+import {DetailsContextProvider} from './components/DetailsContextProvider'
+import {Layout} from './components/Layout'
+import {AdoptionForm} from './components/AdoptionForm'
+import {AdoptionTable} from './components/AdoptionTable'
 import './App.css'
 
 
