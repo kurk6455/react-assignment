@@ -2,6 +2,7 @@
     height: 90vh;
     width: 100vw;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -9,7 +10,7 @@
 .tableData>div {
     height: 80vh;
     width: 80vw;
-    margin: 50px;
+    margin: 50px 50px 10px 50px;
     display: flex;
     flex-direction: column;
     background-color: #5a626d;
@@ -30,4 +31,17 @@ td {
 
 th {
     background-color: #3d4249;
+}
+
+.submitBtn {
+    /* width: 70vw; */
+    text-decoration: none;
+    font-weight: 600;
+    background-color: lightgreen;
+    padding : 5px 10px;
+}
+
+.submitBtn :hover{
+    background-color: lightsalmon;
+    cursor: pointer;
 }

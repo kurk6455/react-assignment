@@ -1,5 +1,6 @@
 import { DetailsContext } from "./DetailsContextProvider";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import './Css/AdoptionTable.css'
 
 export function AdoptionTable() {
@@ -18,25 +19,31 @@ export function AdoptionTable() {
         );
     })
 
+
+
     return (
-        <div class="tableData">
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Pet Name</th>
-                            <th>Pet Type</th>
-                            <th>Breed</th>
-                            <th>Adopter Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {detailData}
-                    </tbody>
-                </table>
+        <>
+
+            <div class="tableData">
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pet Name</th>
+                                <th>Pet Type</th>
+                                <th>Breed</th>
+                                <th>Adopter Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {detailData}
+                        </tbody>
+                    </table>
+                </div>
+                <Link className="submitBtn" to='/'>Back..</Link>
             </div>
-        </div>
+        </>
     )
 }
