@@ -1,0 +1,8 @@
+body {
+    height : 100vh;
+    background-image: url('./assets/BackgroundImg.jpg');
+    background-color: #282A35;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
