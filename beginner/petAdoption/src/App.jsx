@@ -1,11 +1,24 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import './App.css'
+
+
+const DetailsContext = createContext();
+
+function DetailsContextProvider({ children }) {
+  const [details, setDetails] = useState([]);
+
+  return (
+    <DetailsContext.Provider value={{ details, setDetails }}>
+      {children}
+    </DetailsContext.Provider>
+  );
+}
 
 function App() {
 
   return (
-    <>
+    <DetailsContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -14,7 +27,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </DetailsContextProvider>
   )
 }
 
@@ -39,7 +52,7 @@ function Header() {
 }
 
 function AdoptionForm() {
-  const [details, setDetails] = useState([]);
+  const { details, setDetails } = useContext(DetailsContext);
 
   const petName = useRef();
   const petType = useRef();
@@ -51,17 +64,17 @@ function AdoptionForm() {
   function submitFn() {
     //it's asynchronous
     setDetails([...details, {
-      petName : petName.current.value,
-      petType : petType.current.value,
-      breed : breed.current.value,
-      name : name.current.value,
-      email : email.current.value,
-      phone : phone.current.value,
+      petName: petName.current.value,
+      petType: petType.current.value,
+      breed: breed.current.value,
+      name: name.current.value,
+      email: email.current.value,
+      phone: phone.current.value,
     }]);
   }
 
   //Print the detial only when details is updated
-  useEffect(function(){
+  useEffect(function () {
     console.log(details);
   }, [details]);
 
@@ -85,10 +98,38 @@ function AdoptionForm() {
 }
 
 function AdoptionTable() {
+  const { details } = useContext(DetailsContext);
+
+  const detailData = details.map(ele => {
+    return (
+      <tr>
+        <td>{ele.petName}</td>
+        <td>{ele.petType}</td>
+        <td>{ele.breed}</td>
+        <td>{ele.name}</td>
+        <td>{ele.email}</td>
+        <td>{ele.phone}</td>
+      </tr>
+    );
+  })
 
   return (
     <>
-      <div>Inside adoption table</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Pet Name</th>
+            <th>Pet Type</th>
+            <th>Breed</th>
+            <th>Adopter Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {detailData}
+        </tbody>
+      </table>
     </>
   )
 }
