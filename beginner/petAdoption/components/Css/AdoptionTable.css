@@ -1,0 +1,33 @@
+.tableData {
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tableData>div {
+    height: 80vh;
+    width: 80vw;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    background-color: #5a626d;
+    opacity: 0.91;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    border-collapse: collapse;
+    color : rgb(223, 223, 223);
+    font-size: x-large;
+    margin : 5px;
+    padding : 5px;
+    text-align: center;
+}
+
+th {
+    background-color: #3d4249;
+}

@@ -1,0 +1,44 @@
+.form {
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form>div {
+    height : 70vh;
+    width: 50vw;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #5a626d;
+    opacity: 0.91;
+}
+
+
+.labelTxt {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+    font-weight: 400;
+}
+
+.inputBox {
+    height : 5vh;
+    width: 30vw;
+    margin-bottom: 10px;
+}
+
+.submitBtn {
+    text-decoration: none;
+    font-weight: 600;
+    background-color: lightgreen;
+    padding : 5px 10px;
+}
+
+.submitBtn :hover{
+    background-color: lightsalmon;
+    cursor: pointer;
+}

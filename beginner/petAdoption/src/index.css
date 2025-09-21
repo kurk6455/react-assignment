@@ -1,3 +1,7 @@
+* {
+    margin : 0px;
+    padding : 0px;
+}
 body {
     height : 100vh;
     background-image: url('./assets/BackgroundImg.jpg');

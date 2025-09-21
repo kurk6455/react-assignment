@@ -1,0 +1,13 @@
+.headerDiv {
+    height : 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5a626d;
+    margin-top: 0px;
+}
+
+.headerTxt {
+    font-family: 'Courier New', Courier, monospace;
+    color : white;
+}
