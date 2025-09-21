@@ -1,12 +1,101 @@
-# React + Vite
+# 🐾 Pet Adoption App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React-based **Pet Adoption Management App** that allows users to:
 
-Currently, two official plugins are available:
+* Fill in a pet adoption form 📝
+* View all adoption requests in a dynamic table 📋
+* Manage adopter details in real-time using React Context ⚡
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project demonstrates **React Router, Context API, and component-based UI design** in a beginner-friendly way.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+✅ Adoption form to capture details (Pet name, type, breed, adopter info)
+✅ Adoption table displaying submitted records dynamically
+✅ React Context API for state management
+✅ Routing with `react-router-dom`
+✅ Styled with CSS for a clean UI
+✅ Fully responsive
+
+---
+
+## 📸 Screenshots
+
+### 📝 Adoption Form
+
+![Adoption Form](./assets/AdoptationForm.png)
+
+### 📋 Adoption Table
+
+![Adoption Table](./assets/AdoptationTable.png)
+
+---
+
+## 🛠️ Tech Stack
+
+* **React.js** (Frontend library)
+* **React Router DOM** (Routing)
+* **Context API** (State Management)
+* **CSS** (Styling)
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/your-username/petAdoption.git
+cd petAdoption
+```
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Run the App
+
+```bash
+npm run dev
+```
+
+Then open 👉 [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 📂 Project Structure
+
+```
+petAdoption/
+│── public/
+│── src/
+│   ├── components/
+│   │   ├── AdoptionForm.jsx
+│   │   ├── AdoptionTable.jsx
+│   │   ├── Header.jsx
+│   │   ├── Layout.jsx
+│   │   ├── DetailsContextProvider.jsx
+│   ├── Css/
+│   │   ├── AdoptionForm.css
+│   │   ├── AdoptionTable.css
+│   │   ├── Header.css
+│   ├── App.jsx
+│   ├── App.css
+│── package.json
+│── README.md
+```
+
+---
+
+## 🤝 Contribution
+
+Contributions are welcome!
+
+* Fork the repo 🍴
+* Create a new branch 🌱
+* Make your changes 💡
+* Submit a PR 🚀
