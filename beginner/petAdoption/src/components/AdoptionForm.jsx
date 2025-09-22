@@ -13,6 +13,8 @@ export function AdoptionForm() {
     const email = useRef();
     const phone = useRef();
 
+    const emailError = useRef();
+
     function submitFn() {
         //it's asynchronous
         setDetails([...details, {
@@ -30,12 +32,20 @@ export function AdoptionForm() {
         console.log(details);
     }, [details]);
 
+    // useEffect(function () {
+    //     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    //     {emailRegex.test(email) ? emailError.current = "Invalid Email" : emailError.current = ""}
+    // }, [petName.current])
+
+
+
     return (
         <div className="form">
             <div>
                 <div>
                     <label className="labelTxt">Pet Name</label><br />
                     <input ref={petName} className="inputBox" type="text" placeholder='Pet Name...' /><br />
+                    {/* <p ref={emailError}></p> */}
                 </div>
                 <div>
                     <label className="labelTxt">Pet Type</label><br />
