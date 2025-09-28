@@ -29,6 +29,6 @@ export function Footer() {
   );
 
   return <div className="flex justify-center"> 
-    <button onClick={addCard} className="h-10 w-40 bg-green-300 text-md rounded-md">Load more users</button>
+    <button onClick={addCard} className="h-10 w-40 bg-green-300 text-md rounded-md">Load more users..</button>
     </div>
 }
