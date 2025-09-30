@@ -12,19 +12,31 @@ function App() {
       title: "React Basics",
       content: "Learned about useState, useEffect today.",
       pinned: false,
-      createdAt: "2025-09-29T14:30:00.000Z",
-      updatedAt: null
+      createdAt: "30 Sept. 10:53PM",
+      createdIso: null,
+      updatedAt: null,
+      updatedIso: null
     },
     {
       id: 2,
       title: "Ideas for Project",
       content: "Build a Notes App with search & dark mode",
       pinned: true,
-      createdAt: "2025-09-29T15:00:00.000Z"
+      createdAt: "30 Sept. 10:53PM",
+      createdIso: null,
+      updatedAt: null,
+      updatedIso: null
     }]
   )
   const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
+  const [editId, setEditId] = useState(null);  //stores the current Id needed for editing purpose only
+
+  const [query, setQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState([...notes]);
+  useEffect(() => {
+    setSearchFilter([...notes]);
+  }, [notes])
+
 
   //Disply to console
   useEffect(() => {
@@ -32,17 +44,29 @@ function App() {
   }, [notes])
   useEffect(() => {
     console.log(isEditing);
-  }, [isEditing]);
+  }, [isEditing])
+  useEffect(() => {
+    console.log(query);
+  }, [query])
+
+
 
 
   //Utility function
-  const formatedDate = () => {
-    const currentDate = new Date();
-    const date = currentDate.getDate();
-    const month = currentDate.toLocaleString('default', { month: 'long' });
-    const hr = currentDate.getHours();
-    const min = currentDate.getMinutes();
-    return "" + date + " " + month + "    -    " + hr + ":" + min;
+  function formatedDate() {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const hour12 = hours % 12 || 12;
+    const paddedMinutes = minutes.toString().padStart(2, '0');
+
+    const display = `${day} ${month}. ${hour12}:${paddedMinutes}${ampm}`;
+    const iso = date.toISOString();
+
+    return { iso, display }
   }
   const createNote = (note) => {
     //form validation
@@ -50,8 +74,10 @@ function App() {
       alert("note is empty");
       return;
     }
-    note.createdAt = formatedDate();
-    setNotes([...notes, note]);
+    const { iso, display } = formatedDate();
+    note.createdAt = display;
+    note.createdIso = iso;
+    setNotes(sortNote([...notes, note]));
   }
   const updateNote = (note) => {
     //Form validation
@@ -62,18 +88,20 @@ function App() {
 
     const newNote = notes.map(n => {
       if (n.id === note.id) {
-        note.updatedAt = formatedDate();
+        const { iso, display } = formatedDate();
+        note.updatedAt = display;
+        note.updatedIso = iso;
         return note;
       }
 
       return n;
     })
 
-    setNotes(newNote);
+    setNotes(sortNote(newNote));
   }
   const deleteNote = (id) => {
-    const newNotes = notes.filter(note => note.id !== id);
-    setNotes(newNotes);
+    const newNote = notes.filter(note => note.id !== id);
+    setNotes(newNote);
   }
   const editNote = (id) => {
     if (id === null) setEditId(null)
@@ -81,15 +109,49 @@ function App() {
 
     setIsEditing(true);
   }
+  const pinNote = (id) => {
+    const newNote = notes.map(note => {
+      if (note.id === id) {
+        return { ...note, pinned: !note.pinned }
+      }
+      return note;
+    })
 
+    setNotes(sortNote(newNote));
+  }
+  const getSortDate = (note) => new Date(note.updatedIso || note.createdIso);
+  const sortNote = (sortedNotes) => {
+    console.log("Sorted NOTes array : " + sortedNotes);
+    const pinnedNotes = sortedNotes.filter(note => note.pinned === true);
+    const unpinnedNotes = sortedNotes.filter(note => note.pinned !== true);
+
+    pinnedNotes.sort((a, b) => new Date(getSortDate(b) || 0) - new Date(getSortDate(a) || 0));
+    console.log("Pinned notes : " + pinnedNotes);
+    unpinnedNotes.sort((a, b) => new Date(getSortDate(b) || 0) - new Date(getSortDate(a) || 0));
+
+    return [...pinnedNotes, ...unpinnedNotes];
+  }
+  //searching logic
+  useEffect(() => {
+    if (query === "") {
+      setSearchFilter([...notes]);
+      return;
+    }
+
+    const searchNotes = notes.filter(note => {
+      return (note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.content.toLowerCase().includes(query.toLowerCase()))
+    });
+    setSearchFilter(searchNotes);
+  }, [query])
 
 
 
   return (
     <>
-      <SearchBar />
+      <SearchBar query={query} setQuery={setQuery} />
 
-      {!isEditing ? <NoteList notes={notes} deleteNote={deleteNote} editNote={editNote} /> : <NoteInput notes={notes} createNote={createNote} editId={editId} setIsEditing={setIsEditing} updateNote={updateNote} />}
+      {!isEditing ? <NoteList searchFilter={searchFilter} deleteNote={deleteNote} editNote={editNote} pinNote={pinNote} /> : <NoteInput notes={notes} createNote={createNote} editId={editId} setIsEditing={setIsEditing} updateNote={updateNote} />}
       {!isEditing && <button onClick={() => editNote(null)}>➕</button>}
 
     </>

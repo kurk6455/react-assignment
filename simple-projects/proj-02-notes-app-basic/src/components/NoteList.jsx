@@ -1,11 +1,11 @@
 import { NoteItem } from "./NoteItem"
 
-export const NoteList = ( {notes, editNote, deleteNote} )=> {
+export const NoteList = ( {searchFilter, editNote, deleteNote, pinNote} )=> {
 
     return (
         <>
-            {notes.map( (note => {
-                return <NoteItem key={note.id} note={note} editNote={editNote} deleteNote={deleteNote}/>
+            {searchFilter.map( (note => {
+                return <NoteItem key={note.id} note={note} editNote={editNote} deleteNote={deleteNote} pinNote={pinNote}/>
             }))}
         </>
     )
