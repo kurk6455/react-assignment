@@ -32,10 +32,10 @@ export const NoteInput = ({ notes, editId, setIsEditing, createNote, updateNote 
 
 
     return (
-        <>
-            <textarea rows="1" col="50" value={title} onChange={(e) => setTitle(e.target.value)}></textarea>
+        <div className="flex flex-col gap-3 p-4 rounded-xl bg-gray-50 shadow">
+            <textarea rows="1" col="50" placeholder="Title..." value={title} onChange={(e) => setTitle(e.target.value)} className="resize-none px-3 py-2 rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-100 transition text-lg font-semibold"></textarea>
             {/* <p>{note.createdAt}</p> */}
-            <textarea rows="10" col="50" value={content} onChange={(e) => setContent(e.target.value)}></textarea>
+            <textarea rows="10" col="50" placeholder="Start typing..." value={content} onChange={(e) => setContent(e.target.value)} className="resize-none px-3 py-2 rounded-md border border-gray-300 bg-white text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-100 transition min-h-[120px]"></textarea>
             {isNew ? <button onClick={() => {
                 createNote({
                     id: note.id,
@@ -44,7 +44,7 @@ export const NoteInput = ({ notes, editId, setIsEditing, createNote, updateNote 
                     pinned: false,
                 });
                 setIsEditing(false);
-            }}>Save</button> :
+            }} className="mt-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow-sm transition">Save</button> :
                 <button onClick={() => {
                     updateNote({
                         id: note.id,
@@ -54,7 +54,8 @@ export const NoteInput = ({ notes, editId, setIsEditing, createNote, updateNote 
                         createdAt: note.createdAt
                     });
                     setIsEditing(false);
-                }}>Update</button>}
-        </>
+                }} className="mt-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow-sm transition">Update</button>}
+            <button onClick={ () => setIsEditing(false)} className=" px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium shadow-sm transition">Back</button>
+        </div>
     )
 }

@@ -10,24 +10,65 @@ function App() {
     {
       id: 1,
       title: "React Basics",
-      content: "Learned about useState, useEffect today.",
+      content: "Learned about useState, useEffect today. Explored component lifecycle and hooks.",
       pinned: false,
       createdAt: "30 Sept. 10:53PM",
-      createdIso: null,
+      createdIso: "2025-09-30T22:53:00Z",
       updatedAt: null,
-      updatedIso: null
+      updatedIso: null,
     },
     {
       id: 2,
       title: "Ideas for Project",
-      content: "Build a Notes App with search & dark mode",
+      content: "Build a Notes App with search & dark mode. Add offline support and reminders.",
       pinned: true,
       createdAt: "30 Sept. 10:53PM",
-      createdIso: null,
+      createdIso: "2025-09-30T22:53:00Z",
       updatedAt: null,
-      updatedIso: null
-    }]
-  )
+      updatedIso: null,
+    },
+    {
+      id: 3,
+      title: "JavaScript ES6 Features",
+      content: "Reviewed arrow functions, destructuring, and async/await.",
+      pinned: false,
+      createdAt: "29 Sept. 8:15PM",
+      createdIso: "2025-09-29T20:15:00Z",
+      updatedAt: "30 Sept. 9:00AM",
+      updatedIso: "2025-09-30T09:00:00Z",
+    },
+    {
+      id: 4,
+      title: "Meeting Notes",
+      content: "Discuss project deadlines and assign tasks for next sprint.",
+      pinned: true,
+      createdAt: "28 Sept. 2:00PM",
+      createdIso: "2025-09-28T14:00:00Z",
+      updatedAt: null,
+      updatedIso: null,
+    },
+    {
+      id: 5,
+      title: "Bug Fixes",
+      content: "Fixed issue with token refresh and UI flickering on load.",
+      pinned: false,
+      createdAt: "27 Sept. 4:30PM",
+      createdIso: "2025-09-27T16:30:00Z",
+      updatedAt: null,
+      updatedIso: null,
+    },
+    {
+      id: 6,
+      title: "Learning Tailwind CSS",
+      content: "Explored utility-first classes, responsive design, and dark mode handling.",
+      pinned: false,
+      createdAt: "26 Sept. 11:25AM",
+      createdIso: "2025-09-26T11:25:00Z",
+      updatedAt: null,
+      updatedIso: null,
+    }
+  ])
+
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);  //stores the current Id needed for editing purpose only
 
@@ -35,6 +76,18 @@ function App() {
   const [searchFilter, setSearchFilter] = useState([...notes]);
   useEffect(() => {
     setSearchFilter([...notes]);
+  }, [notes])
+
+
+  //local storage
+  useEffect(() => {
+    console.log("Getting local storage data");
+    const savedNotes = localStorage.getItem("notes");
+    if (savedNotes) setNotes(JSON.parse(savedNotes));
+  }, [])
+  useEffect(() => {
+    console.log("Setting local storage");
+    localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes])
 
 
@@ -148,13 +201,13 @@ function App() {
 
 
   return (
-    <>
-      <SearchBar query={query} setQuery={setQuery} />
+    <div className='min-h-screen bg-white text-gray-900'>
+      {!isEditing && <SearchBar query={query} setQuery={setQuery} />}
 
       {!isEditing ? <NoteList searchFilter={searchFilter} deleteNote={deleteNote} editNote={editNote} pinNote={pinNote} /> : <NoteInput notes={notes} createNote={createNote} editId={editId} setIsEditing={setIsEditing} updateNote={updateNote} />}
-      {!isEditing && <button onClick={() => editNote(null)}>➕</button>}
+      {!isEditing && <button onClick={() => editNote(null)} className='fixed right-6 bottom-6 w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-2xl flex items-center justify-center shadow-xl transition'>➕</button>}
 
-    </>
+    </div>
   )
 }
 
