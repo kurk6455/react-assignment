@@ -1,3 +1,4 @@
+import { useReducer } from "react";
 import { createContext } from "react";
 import { useEffect, useState } from "react";
 
@@ -89,22 +90,31 @@ export const NotesContextProvider = ({ children }) => {
     }, [query])
     //Dark mode State and Logic
     const [darkMode, setDarkMode] = useState(false);
-    useEffect( () => {
-        if(darkMode) document.getElementById('root').classList.add('dark');
+    useEffect(() => {
+        if (darkMode) document.getElementById('root').classList.add('dark');
         else document.getElementById('root').classList.remove('dark');
     }, [darkMode])
 
 
 
     //local storage logic...
+    const storage = {
+        get: () => {
+            console.log("Getting local storage data");
+            try{
+                setNotes( JSON.parse(localStorage.getItem("notes")) || []);
+            }catch(e){
+                console.log("Can't load local storage note");
+            }
+        },
+
+        set: (notes) => {
+            console.log("Setting local storage");
+            localStorage.setItem("notes", JSON.stringify(notes));
+        }
+    }
     useEffect(() => {
-        console.log("Getting local storage data");
-        const savedNotes = localStorage.getItem("notes");
-        if (savedNotes) setNotes(JSON.parse(savedNotes));
-    }, [])
-    useEffect(() => {
-        console.log("Setting local storage");
-        localStorage.setItem("notes", JSON.stringify(notes));
+        storage.set(notes);
     }, [notes])
 
 
@@ -121,7 +131,7 @@ export const NotesContextProvider = ({ children }) => {
 
 
 
-    //Utility function
+    //Utility function (action)
     function formatedDate() {
         const date = new Date();
         const day = date.getDate();
@@ -194,18 +204,20 @@ export const NotesContextProvider = ({ children }) => {
         const pinnedNotes = sortedNotes.filter(note => note.pinned === true);
         const unpinnedNotes = sortedNotes.filter(note => note.pinned !== true);
 
-        pinnedNotes.sort((a, b) => getSortDate(b)- getSortDate(a));
+        pinnedNotes.sort((a, b) => getSortDate(b) - getSortDate(a));
         console.log("Pinned notes : " + pinnedNotes);
         unpinnedNotes.sort((a, b) => getSortDate(b) - getSortDate(a));
 
         return [...pinnedNotes, ...unpinnedNotes];
     }
-    
 
-
-    return(
-        <NotesContext.Provider value={{ query, setQuery, searchFilter, deleteNote, editNote, pinNote, notes, createNote, editId, setIsEditing, updateNote, isEditing, darkMode, setDarkMode}} >
+    const contextValue = {
+        state: { notes, isEditing, editId, query, searchFilter, darkMode },
+        action: { setNotes, setIsEditing, setEditId, setSearchFilter, setDarkMode, createNote, updateNote, deleteNote, editNote, pinNote }
+    }
+    return (
+        <NotesContext.Provider value={contextValue} >
             {children}
-        </NotesContext.Provider>       
+        </NotesContext.Provider>
     )
 }

@@ -4,7 +4,8 @@ import { NotesContext } from "../utility/NotesContext";
 
 
 export const NoteList = ( )=> {
-    const {searchFilter} = useContext(NotesContext);
+    const contextValue = useContext(NotesContext);
+    const {searchFilter} = contextValue.state;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-5">

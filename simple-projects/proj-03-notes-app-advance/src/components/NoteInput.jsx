@@ -4,7 +4,9 @@ import { NotesContext } from "../utility/NotesContext";
 
 
 export const NoteInput = () => {
-    const { notes, editId, setIsEditing, createNote, updateNote } = useContext(NotesContext);
+    const contextValue = useContext(NotesContext);
+    const { notes, editId } = contextValue.state;
+    const { setIsEditing, createNote, updateNote} = contextValue.action;
     let isNew = false;
     if(editId === null) isNew = true;
 

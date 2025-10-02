@@ -3,7 +3,8 @@ import { NotesContext } from "../utility/NotesContext";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 
 export const NoteItem = ({ note }) => {
-    const { editNote, pinNote } = useContext(NotesContext);
+    const contextValue = useContext(NotesContext);
+    const { editNote, pinNote } = contextValue.action;
     const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
     const pinnedClass = note.pinned ? "border-blue-500 bg-blue-50 shadow-lg dark:bg-blue-900/30 dark:border-blue-400 dark:shadow-blue-500/20" : "border-gray-200 bg-white shadow-sm hover:shadow-md dark:bg-gray-800 dark:border-gray-700 dark:shadow-md";

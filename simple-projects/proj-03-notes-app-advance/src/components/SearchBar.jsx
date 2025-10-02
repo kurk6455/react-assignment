@@ -3,7 +3,9 @@ import { NotesContext } from '../utility/NotesContext';
 import '../App.css';
 
 export const SearchBar = () => {
-    const {query, setQuery} = useContext(NotesContext);
+    const contextValue = useContext(NotesContext);
+    const { query } = contextValue.state;
+    const { setQuery } = contextValue.action;
     console.log("Inside serach bar compnent "+ query);
 
     return (
