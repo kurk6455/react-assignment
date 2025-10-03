@@ -1,12 +1,12 @@
 import { useEffect, useState, createContext, useContext } from "react";
-import { wisthListContext } from "./WishListProvider";
+import { wishListContext } from "./WishListProvider";
 
 export const shoppingCartContext = createContext(null);
 
 export const ShoppingCartProvider = ({ children }) => {
-    const wishListContextValue = useContext(wisthListContext);
+    const wishListContextValue = useContext(wishListContext);
     const { wishList } = wishListContextValue.state;
-    const { uuidv4, setWishList } = wishListContextValue.action;
+    const { setWishList } = wishListContextValue.action;
 
     const [shoppingCart, setShoppingCart] = useState([]);
     useEffect(() => {
@@ -39,10 +39,12 @@ export const ShoppingCartProvider = ({ children }) => {
     }
     const decreaseQuantity = (id) => {
         const newShoppingCart = wishList.map(item => {
-            if (item.id === id && item.quantity > 1) {
+            if(item.quantity === 1){
+                return { ...item, isCart: false, quantity: 1};
+            }
+            if (item.id === id) {
                 return { ...item, quantity: item.quantity - 1 };
             }
-            return item;
         })
         setWishList(newShoppingCart);
     }
@@ -59,7 +61,7 @@ export const ShoppingCartProvider = ({ children }) => {
 
     const shoppingCartContextValue = {
         state: { shoppingCart },
-        action: { uuidv4, increaseQuantity, decreaseQuantity, deleteItem }
+        action: { increaseQuantity, decreaseQuantity, deleteItem }
     }
     return (
         <shoppingCartContext.Provider value={shoppingCartContextValue}>

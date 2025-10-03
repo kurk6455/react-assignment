@@ -1,9 +1,9 @@
 import { useContext } from "react"
-import { wisthListContext } from "../utilities/WishListProvider"
+import { wishListContext } from "../utilities/WishListProvider"
 import { WishItem } from "./WishItem";
 
 export const WishList = () => {
-    const wishListContextValue = useContext(wisthListContext);
+    const wishListContextValue = useContext(wishListContext);
     const { wishListBtn, filteredWishlist } = wishListContextValue.state;
     const { setSelectedType } = wishListContextValue.action;
 

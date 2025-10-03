@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState, createContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-export const wisthListContext = createContext(null);
+export const wishListContext = createContext(null);
 
 export const WishListProvider = ({ children }) => {
     const [wishList, setWishList] = useState([
@@ -103,14 +103,13 @@ export const WishListProvider = ({ children }) => {
     }
 
 
-
     const wishListContextValue = {
         state: { wishList, wishListBtn, selectedType, filteredWishlist },
-        action: { uuidv4, setWishList, setSelectedType, updateWishList }
+        action: { setWishList, setSelectedType, updateWishList }
     }
     return (
-        <wisthListContext.Provider value={wishListContextValue}>
+        <wishListContext.Provider value={wishListContextValue}>
             {children}
-        </wisthListContext.Provider>
+        </wishListContext.Provider>
     )
 }

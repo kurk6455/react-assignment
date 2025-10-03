@@ -6,6 +6,7 @@ export const orderTotalContext = createContext(null);
 export const OrderTotalProvider = ({ children }) => {
     const shoppingCartContextValue = useContext(shoppingCartContext);
     const { shoppingCart } = shoppingCartContextValue.state;
+    const { deleteItem } = shoppingCartContextValue.action;
 
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -24,9 +25,16 @@ export const OrderTotalProvider = ({ children }) => {
     const [purchase, setPurchase] = useState(false);
 
 
+    //Utility
+    const purchaseSuccessfulFn = () => {
+        shoppingCart.map( item => deleteItem(item.id))
+        setPurchase(false);
+    }
+
+
     const orderTotalContextValue = {
         state: { totalQuantity, totalPrice, purchase },
-        action: { setPurchase }
+        action: { setPurchase, purchaseSuccessfulFn }
     }
     return (
         <orderTotalContext.Provider value={orderTotalContextValue}>

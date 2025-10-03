@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { orderTotalContext } from "../utilities/OrderTotalProvider";
 
 
-export const PurchaseSuccessfull = () => {
+export const PurchaseSuccessful = () => {
     const orderTotalContextValue = useContext(orderTotalContext);
     const { totalPrice } = orderTotalContextValue.state;
-    const { setPurchase } = orderTotalContextValue.action;
+    const { purchaseSuccessfulFn} = orderTotalContextValue.action;
 
     return (
         <>
@@ -13,7 +13,7 @@ export const PurchaseSuccessfull = () => {
             <div>✅</div>
             <p>Thank you for your purchase. Your order has been successfully processed</p>
             <div>Total amount - {totalPrice}</div>
-            <button onClick={() => setPurchase(false)}>Close</button>
+            <button onClick={purchaseSuccessfulFn}>Close</button>
         </>
     )
 }

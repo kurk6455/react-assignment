@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { wisthListContext } from "../utilities/WishListProvider";
+import { wishListContext } from "../utilities/WishListProvider";
 
 export   const WishItem = ({ item }) => {
-    const wishListContextValue = useContext(wisthListContext);
+    const wishListContextValue = useContext(wishListContext);
     const { updateWishList } = wishListContextValue.action;
 
 
