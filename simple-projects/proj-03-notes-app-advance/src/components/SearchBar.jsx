@@ -6,7 +6,6 @@ export const SearchBar = () => {
     const contextValue = useContext(NotesContext);
     const { query } = contextValue.state;
     const { setQuery } = contextValue.action;
-    console.log("Inside serach bar compnent "+ query);
 
     return (
         <div className="flex items-center gap-2 py-8 px-8">

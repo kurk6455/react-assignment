@@ -10,7 +10,6 @@ export function NotesApp() {
   const {isEditing, darkMode} = contextValue.state;
   const {editNote, setDarkMode} = contextValue.action;
 
-  console.log("inside Notesap component " +isEditing);
   return (
     <div className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         {!isEditing && <SearchBar />}

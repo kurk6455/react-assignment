@@ -1,12 +1,12 @@
-import { useReducer } from "react";
 import { createContext } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
+import { notesReducer } from './reducer';
 
 export const NotesContext = createContext(null);
 
 export const NotesContextProvider = ({ children }) => {
     //States ..
-    const [notes, setNotes] = useState([
+    const initialValue = [
         {
             id: 1,
             title: "React Basics",
@@ -67,7 +67,9 @@ export const NotesContextProvider = ({ children }) => {
             updatedAt: null,
             updatedIso: null,
         }
-    ])
+    ]
+    const [notes, dispatch] = useReducer(notesReducer, [], () => JSON.parse(localStorage.getItem("notes")) || initialValue);
+
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);  //stores the current Id needed for editing purpose only
     //Searching State and Logic
@@ -99,18 +101,21 @@ export const NotesContextProvider = ({ children }) => {
 
     //local storage logic...
     const storage = {
-        get: () => {
-            console.log("Getting local storage data");
-            try{
-                setNotes( JSON.parse(localStorage.getItem("notes")) || []);
-            }catch(e){
-                console.log("Can't load local storage note");
-            }
-        },
+        // get: () => {
+        //     console.log("Getting local storage data");
+        //     try {
+        //     } catch (e) {
+        //         console.log("Can't load local storage note");
+        //     }
+        // },
 
         set: (notes) => {
-            console.log("Setting local storage");
-            localStorage.setItem("notes", JSON.stringify(notes));
+            try{
+                console.log("Setting local storage");
+                localStorage.setItem("notes", JSON.stringify(notes));
+            }catch(e){
+                console.log("Unable to store notes "+e);
+            }
         }
     }
     useEffect(() => {
@@ -118,69 +123,25 @@ export const NotesContextProvider = ({ children }) => {
     }, [notes])
 
 
-    //Disply to console for error perspective...
-    useEffect(() => {
-        console.log(notes);
-    }, [notes])
-    useEffect(() => {
-        console.log(isEditing);
-    }, [isEditing])
-    useEffect(() => {
-        console.log(query);
-    }, [query])
-
-
 
     //Utility function (action)
-    function formatedDate() {
-        const date = new Date();
-        const day = date.getDate();
-        const month = date.toLocaleString('default', { month: 'short' });
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const hour12 = hours % 12 || 12;
-        const paddedMinutes = minutes.toString().padStart(2, '0');
-
-        const display = `${day} ${month}. ${hour12}:${paddedMinutes}${ampm}`;
-        const iso = date.toISOString();
-
-        return { iso, display }
-    }
     const createNote = (note) => {
-        //form validation
-        if (note.title === "" || note.content === "") {
-            alert("note is empty");
-            return;
-        }
-        const { iso, display } = formatedDate();
-        note.createdAt = display;
-        note.createdIso = iso;
-        setNotes(sortNote([...notes, note]));
+        dispatch({
+            type: "CREATE_NOTE",
+            note: note
+        })
     }
     const updateNote = (note) => {
-        //Form validation
-        if (note.title === "" || note.content === "") {
-            alert("note is empty");
-            return;
-        }
-
-        const newNote = notes.map(n => {
-            if (n.id === note.id) {
-                const { iso, display } = formatedDate();
-                note.updatedAt = display;
-                note.updatedIso = iso;
-                return note;
-            }
-
-            return n;
+        dispatch({
+            type: "UPDATE_NOTE",
+            note: note
         })
-
-        setNotes(sortNote(newNote));
     }
     const deleteNote = (id) => {
-        const newNote = notes.filter(note => note.id !== id);
-        setNotes(newNote);
+        dispatch({
+            type: "DELETE_NOTE",
+            id: id
+        })
     }
     const editNote = (id) => {
         if (id === null) setEditId(null)
@@ -189,31 +150,16 @@ export const NotesContextProvider = ({ children }) => {
         setIsEditing(true);
     }
     const pinNote = (id) => {
-        const newNote = notes.map(note => {
-            if (note.id === id) {
-                return { ...note, pinned: !note.pinned }
-            }
-            return note;
+        dispatch({
+            type: "PIN_NOTE",
+            id: id
         })
-
-        setNotes(sortNote(newNote));
     }
-    const getSortDate = (note) => new Date(note.updatedIso || note.createdIso);
-    const sortNote = (sortedNotes) => {
-        console.log("Sorted NOTes array : " + sortedNotes);
-        const pinnedNotes = sortedNotes.filter(note => note.pinned === true);
-        const unpinnedNotes = sortedNotes.filter(note => note.pinned !== true);
 
-        pinnedNotes.sort((a, b) => getSortDate(b) - getSortDate(a));
-        console.log("Pinned notes : " + pinnedNotes);
-        unpinnedNotes.sort((a, b) => getSortDate(b) - getSortDate(a));
-
-        return [...pinnedNotes, ...unpinnedNotes];
-    }
 
     const contextValue = {
         state: { notes, isEditing, editId, query, searchFilter, darkMode },
-        action: { setNotes, setIsEditing, setEditId, setSearchFilter, setDarkMode, createNote, updateNote, deleteNote, editNote, pinNote }
+        action: { setIsEditing, setEditId, setSearchFilter, setQuery, setDarkMode, createNote, updateNote, deleteNote, editNote, pinNote }
     }
     return (
         <NotesContext.Provider value={contextValue} >

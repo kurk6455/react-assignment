@@ -2,7 +2,8 @@ import { useContext } from "react"
 import { NotesContext } from "../utility/NotesContext"
 
 export const DeleteConfirmation = ({ setIsConfirmDelete, title, id }) => {
-    const { deleteNote } = useContext(NotesContext);
+    const contextValue = useContext(NotesContext);
+    const { deleteNote } = contextValue.action;
 
     return (
         <>

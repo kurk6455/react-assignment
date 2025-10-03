@@ -1,8 +1,9 @@
 ---
 
-# 📝 Notes App (Advance)
+# 📝 Notes App (Advanced)
 
-A **React-based Notes App** with all essential note-taking features — search, pinning, dark mode, and persistent storage — wrapped in a clean and minimal UI.
+A modern **React Notes App** built with **Context API + Reducer**.
+It includes **pinning, search, dark mode, and localStorage persistence**, making it more than just a basic notes app.
 
 ---
 
@@ -12,31 +13,31 @@ A **React-based Notes App** with all essential note-taking features — search, 
 
 * ➕ Create new notes
 * ✏️ Edit and update existing notes
-* ❌ Delete notes with confirmation
+* ❌ Delete notes with confirmation popup
 
 ### 📌 Organization
 
-* Pin/Unpin notes — pinned notes always stay on top
-* Notes automatically sorted by last updated / created time
+* Pin/Unpin notes — **pinned always stay on top**
+* Notes sorted by **last updated or created date**
 
 ### 🔍 Smart Search
 
-* Real-time search by **title** or **content**
-* Reset search with one click
+* Real-time search across **titles** and **content**
+* Reset search with a single click
 
 ### 🌗 Dark Mode
 
-* Toggle between **light** and **dark** mode
-* Smooth theme transition
+* One-click **Light/Dark theme toggle**
+* Smooth transition with Tailwind CSS
 
 ### 💾 Persistence
 
-* Notes saved in **LocalStorage**
-* Automatically loaded on refresh
+* Notes stored in **LocalStorage**
+* Auto-load on refresh with data intact
 
 ### ⏱ Timestamps
 
-* Auto-generated **createdAt** & **updatedAt** for each note
+* Auto-generated **createdAt** and **updatedAt** metadata
 
 ---
 
@@ -47,15 +48,15 @@ A **React-based Notes App** with all essential note-taking features — search, 
   <img src="./src/assets/add-edit.png" alt="Add/Edit Note" width="250"/>
   <img src="./src/assets/search.png" alt="Search Notes" width="250"/>
   <img src="./src/assets/deleteConfirmation.png" alt="Delete Confirmation" width="250"/>
-</p>
+</p>  
 
 ---
 
 ## ⚙️ Tech Stack
 
-* React (Context API + Hooks)
-* JavaScript (ES6+)
-* Tailwind CSS (Dark mode ready)
+* ⚛️ React (Context API + Hooks + Reducer)
+* 🟨 JavaScript (ES6+)
+* 🎨 Tailwind CSS (with dark mode support)
 
 ---
 
@@ -63,7 +64,7 @@ A **React-based Notes App** with all essential note-taking features — search, 
 
 ```bash
 git clone https://github.com/kurk6455/react-assignment.git
-cd proj-02-notes-app-basic
+cd proj-notes-app-advanced
 npm install
 npm start
 ```
@@ -72,8 +73,8 @@ npm start
 
 ## 💡 Future Enhancements
 
-* 🏷 Tagging & categories
-* 🔔 Reminders & notifications
-* ☁️ Cloud sync support
+* 🏷 Add tags & categories
+* 📅 Reminders & notifications
+* ☁️ Cloud sync across devices
 
 ---
