@@ -4,6 +4,8 @@ import { orderTotalContext } from "../utilities/OrderTotalProvider";
 
 
 export const Header = () => {
+    console.log("Rendering <Header>");
+
     const orderTotalContextValue = useContext(orderTotalContext);
     const { totalQuantity } = orderTotalContextValue.state;
 

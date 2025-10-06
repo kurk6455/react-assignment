@@ -1,16 +1,18 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState, createContext, useContext, useCallback, useMemo } from "react";
 import { shoppingCartContext } from "./ShoppingCartProvider";
 
 export const orderTotalContext = createContext(null);
 
 export const OrderTotalProvider = ({ children }) => {
+    console.log("Rendering <OrderTotalProvider>");
+
     const shoppingCartContextValue = useContext(shoppingCartContext);
     const { shoppingCart } = shoppingCartContextValue.state;
     const { deleteItem } = shoppingCartContextValue.action;
 
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
-    useEffect(() => {
+    useMemo(() => {
         //Calculate the total quantity
         setTotalQuantity(shoppingCart.reduce((acc, item) => {
             return acc + item.quantity
@@ -26,10 +28,10 @@ export const OrderTotalProvider = ({ children }) => {
 
 
     //Utility
-    const purchaseSuccessfulFn = () => {
+    const purchaseSuccessfulFn = useCallback(() => {
         shoppingCart.map( item => deleteItem(item.id))
         setPurchase(false);
-    }
+    })
 
 
     const orderTotalContextValue = {

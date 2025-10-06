@@ -1,10 +1,13 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { wishListContext } from "../utilities/WishListProvider";
+import { wishListDataContext } from "../utilities/WishListDataProvider";
 
-export   const WishItem = ({ item }) => {
-    const wishListContextValue = useContext(wishListContext);
-    const { updateWishList } = wishListContextValue.action;
+export const WishItem = React.memo(({ item }) => {
+    console.log("Rendering <WishItem>", item);
+
+    const wishListDataContextValue = useContext(wishListDataContext);
+    const { updateWishList } = wishListDataContextValue.action;
 
 
     return (
@@ -16,4 +19,4 @@ export   const WishItem = ({ item }) => {
              
         </>
     )
-}
+})

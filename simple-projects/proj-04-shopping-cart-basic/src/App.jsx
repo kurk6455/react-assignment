@@ -2,12 +2,15 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { Header } from "./components/Header.jsx"
 import { WishList } from "./components/WishList.jsx"
 import { ShoppingCart } from "./components/ShoppingCart.jsx"
-import { WishListProvider } from "./utilities/WishListProvider.jsx";
+import { WishListDataProvider } from "./utilities/WishListDataProvider.jsx";
 import './App.css'
 import { ShoppingCartProvider } from "./utilities/ShoppingCartProvider.jsx";
 import { OrderTotalProvider } from "./utilities/OrderTotalProvider.jsx";
+import { WishListUIProvider } from "./utilities/WishListUIProvider.jsx";
 
 function App() {
+  console.log("Rendering <App>");
+
   return (
     <>
       <BrowserRouter>
@@ -27,14 +30,16 @@ const Layout = () => {
 
   return (
     <>
-      <WishListProvider>
-        <ShoppingCartProvider>
-          <OrderTotalProvider>
-            <Header />
-            <Outlet />
-          </OrderTotalProvider>
-        </ShoppingCartProvider>
-      </WishListProvider>
+      <WishListDataProvider>
+        <WishListUIProvider>
+          <ShoppingCartProvider>
+            <OrderTotalProvider>
+              <Header />
+              <Outlet />
+            </OrderTotalProvider>
+          </ShoppingCartProvider>
+        </WishListUIProvider>
+      </WishListDataProvider>
     </>
   )
 }

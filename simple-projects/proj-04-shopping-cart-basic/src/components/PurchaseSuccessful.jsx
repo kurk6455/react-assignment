@@ -3,6 +3,8 @@ import { orderTotalContext } from "../utilities/OrderTotalProvider";
 
 
 export const PurchaseSuccessful = () => {
+    console.log("Rendering <PurchaseSuccessful>");
+
     const orderTotalContextValue = useContext(orderTotalContext);
     const { totalPrice } = orderTotalContextValue.state;
     const { purchaseSuccessfulFn} = orderTotalContextValue.action;

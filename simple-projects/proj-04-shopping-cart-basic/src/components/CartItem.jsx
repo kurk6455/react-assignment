@@ -3,6 +3,8 @@ import { shoppingCartContext } from "../utilities/ShoppingCartProvider";
 
 
 export const CartItem = ({ item }) => {
+    console.log("Rendering <CartItem>");
+
     const shoppingCartContextValue = useContext(shoppingCartContext);
     const { increaseQuantity, decreaseQuantity, deleteItem } = shoppingCartContextValue.action;
 

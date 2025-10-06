@@ -1,11 +1,15 @@
-import { useContext } from "react"
-import { wishListContext } from "../utilities/WishListProvider"
+import React, { useContext } from "react"
+import { wishListUIContext } from "../utilities/WishListUIProvider";
 import { WishItem } from "./WishItem";
 
-export const WishList = () => {
-    const wishListContextValue = useContext(wishListContext);
-    const { wishListBtn, filteredWishlist } = wishListContextValue.state;
-    const { setSelectedType } = wishListContextValue.action;
+export const WishList = React.memo(() => {
+    console.log("Rendering <WishList>");
+
+    const wishListUIContextValue = useContext(wishListUIContext);
+    const { wishListBtn, filteredWishlist } = wishListUIContextValue.ui;
+    const { setSelectedType } = wishListUIContextValue.action;
+
+
 
     return (
         <>
@@ -26,5 +30,5 @@ export const WishList = () => {
                 : <div>Wishlist is empty</div>}
         </>
     )
-}
+})
 

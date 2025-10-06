@@ -3,11 +3,12 @@ import { shoppingCartContext } from "../utilities/ShoppingCartProvider";
 import { Link } from "react-router-dom";
 import { CartItem } from "./CartItem";
 import { orderTotalContext } from "../utilities/OrderTotalProvider";
-import { useState } from "react";
 import { PurchaseSuccessful } from "./PurchaseSuccessful";
 
 
 export const ShoppingCart = () => {
+    console.log("Rendering <ShoppingCart>");
+
     const shoppingCartContextValue = useContext(shoppingCartContext);
     const { shoppingCart } = shoppingCartContextValue.state;
 

@@ -1,10 +1,12 @@
-import { useEffect } from "react";
-import { useState, createContext } from "react";
+import React from 'react'
+import { useEffect, useState, useMemo, createContext, useCallback } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-export const wishListContext = createContext(null);
+export const wishListDataContext = createContext(null);
 
-export const WishListProvider = ({ children }) => {
+export const WishListDataProvider = React.memo(({ children }) => {
+    console.log("Rendering <WishList-Data-Provider>");
+
     const [wishList, setWishList] = useState([
         {
             wishListType: "default",
@@ -57,41 +59,27 @@ export const WishListProvider = ({ children }) => {
             isCart: false,
         },
     ]);
-    const [wishListBtn, setWishListBtn] = useState([]);
-    useEffect(() => {
-        let tempBtn = [];
-        wishList.map(item => {
-            tempBtn.push(item.wishListType);
-        })
-        tempBtn = [...new Set(tempBtn)];
-        setWishListBtn(tempBtn)
-    }, [wishList])
-    const [selectedType, setSelectedType] = useState("default");
-    const [filteredWishlist, setFilteredWishlist] = useState([]);
-    useEffect(() => {
-        setFilteredWishlist(wishList.filter(item => item.wishListType === selectedType));
-    }, [wishList, selectedType])
-
     
-
-
+    
     //localstorage
-    useEffect( () => {
+    useEffect(() => {
         const data = localStorage.getItem("WishList");
-        if(data) setWishList( JSON.parse(data));
+        if (data) {
+            setWishList(JSON.parse(data));
+        }
     }, [])
-    useEffect( () => {
+    useEffect(() => {
         localStorage.setItem("WishList", JSON.stringify(wishList));
     }, [wishList])
-
-    //Display to catch errors
-    useEffect(() => {
-        console.log(wishList);
-    }, [wishList])
-
-
+    
+    
+    // Display to catch errors
+    // useEffect(() => {
+    //     console.log(wishList);
+    // }, [wishList])
+    
     //utility function
-    const updateWishList = (id) => {
+    const updateWishList = useCallback((id) => {
         const newWishList = wishList.map(item => {
             if (item.id === id) {
                 return { ...item, isCart: true };
@@ -100,16 +88,18 @@ export const WishListProvider = ({ children }) => {
         })
 
         setWishList(newWishList);
-    }
+    }, [wishList])
 
 
-    const wishListContextValue = {
-        state: { wishList, wishListBtn, selectedType, filteredWishlist },
-        action: { setWishList, setSelectedType, updateWishList }
-    }
+    const wishListDataContextValue = useMemo( () => ({
+        state: { wishList },
+        action: { setWishList, updateWishList }
+    }), [wishList]);
+
     return (
-        <wishListContext.Provider value={wishListContextValue}>
+        <wishListDataContext.Provider value={wishListDataContextValue}>
             {children}
-        </wishListContext.Provider>
+        </wishListDataContext.Provider>
     )
-}
+})
+

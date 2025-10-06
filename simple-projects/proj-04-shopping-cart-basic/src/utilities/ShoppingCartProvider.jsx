@@ -1,12 +1,14 @@
-import { useEffect, useState, createContext, useContext } from "react";
-import { wishListContext } from "./WishListProvider";
+import { useEffect, useState, createContext, useContext, useCallback } from "react";
+import { wishListDataContext } from "./WishListDataProvider";
 
 export const shoppingCartContext = createContext(null);
 
 export const ShoppingCartProvider = ({ children }) => {
-    const wishListContextValue = useContext(wishListContext);
-    const { wishList } = wishListContextValue.state;
-    const { setWishList } = wishListContextValue.action;
+    console.log("Rendering <ShoppingCartProvider>");
+
+    const wishListDataContextValue = useContext(wishListDataContext);
+    const { wishList } = wishListDataContextValue.state;
+    const { setWishList } = wishListDataContextValue.action;
 
     const [shoppingCart, setShoppingCart] = useState([]);
     useEffect(() => {
@@ -21,14 +23,13 @@ export const ShoppingCartProvider = ({ children }) => {
 
 
     //Display to catch errors
-    useEffect(() => {
-        console.log("inside ShoppingCartProvider")
-        console.log(shoppingCart)
-    }, [shoppingCart])
+    // useEffect(() => {
+    //     console.log(shoppingCart)
+    // }, [shoppingCart])
 
 
     //utility function
-    const increaseQuantity = (id) => {
+    const increaseQuantity = useCallback((id) => {
         const newShoppingCart = wishList.map(item => {
             if (item.id === id) {
                 return { ...item, quantity: item.quantity + 1 };
@@ -36,8 +37,8 @@ export const ShoppingCartProvider = ({ children }) => {
             return item;
         })
         setWishList(newShoppingCart);
-    }
-    const decreaseQuantity = (id) => {
+    }, [wishList])
+    const decreaseQuantity = useCallback((id) => {
         const newShoppingCart = wishList.map(item => {
             if(item.quantity === 1){
                 return { ...item, isCart: false, quantity: 1};
@@ -47,8 +48,8 @@ export const ShoppingCartProvider = ({ children }) => {
             }
         })
         setWishList(newShoppingCart);
-    }
-    const deleteItem = (id) => {
+    }, [wishList])
+    const deleteItem = useCallback((id) => {
         const newWishList = wishList.map(item => {
             if (item.id === id) {
                 return { ...item, isCart: false, quantity: 1};
@@ -56,7 +57,7 @@ export const ShoppingCartProvider = ({ children }) => {
             return item;
         })
         setWishList(newWishList);
-    }
+    }, [wishList])
 
 
     const shoppingCartContextValue = {
