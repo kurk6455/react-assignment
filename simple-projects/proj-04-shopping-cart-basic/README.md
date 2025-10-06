@@ -1,9 +1,8 @@
 ---
 
-# 🛒 Shopping Cart & Wishlist App
+# 🛒 Shopping Cart & Wishlist App (Basic)
 
-A **React-based e-commerce demo app** that simulates an Amazon-like shopping experience.
-Users can **browse wishlist items, add them to cart, adjust quantities, view totals, and complete purchases** — all with persistent state management.
+A **React-based e-commerce app** that simulates a mini Amazon-like experience — featuring **wishlist management**, **cart operations**, and a **purchase success flow**, all powered by the **Context API** with persistent state.
 
 ---
 
@@ -11,61 +10,100 @@ Users can **browse wishlist items, add them to cart, adjust quantities, view tot
 
 ### 🎁 Wishlist
 
-* Browse predefined items (keyboard, headphones, phone, laptop, smartwatch, etc.)
-* Filter wishlist by **categories** (default, sale, festival)
-* Add items from wishlist → cart
-* Persist wishlist in **localStorage**
+* Preloaded with sample products — laptop, smartwatch, keyboard, etc.
+* Filter wishlist by **type** (`default`, `BBD Sale`, `Festival Sale`)
+* Add any item directly to **cart**
+* Auto-synced with **LocalStorage** for data persistence
 
-### 🛍 Shopping Cart
+### 🛒 Shopping Cart
 
-* View all added cart items
-* Increase / decrease item **quantity**
-* Remove items from cart (goes back to wishlist)
-* Cart auto-syncs with wishlist
+* Real-time cart updates synced from wishlist
+* **Increase / decrease quantity** of each product
+* **Delete item** (restores it back to wishlist)
+* Empty cart shows a clean empty state
 
-### 💵 Order Summary
+### 💵 Order Summary & Checkout
 
-* Auto-calculates **total quantity & price**
-* Real-time updates when quantities change
-* Place an order → **purchase confirmation popup**
+* Auto-calculated **total items** and **total price**
+* “Proceed to Buy” triggers **purchase success modal**
+* On confirmation, clears cart and resets wishlist
 
-### 🖥 UI & Routing
+### 🧭 Navigation & Layout
 
-* **React Router** for navigation (`/` → wishlist, `/cart` → shopping cart)
-* **Header** with cart icon + total item count
-* Simple confirmation modal after purchase
+* `/` → Wishlist view
+* `/cart` → Shopping cart + order summary
+* **Header** shows live cart count, brand name, and user greeting
 
-### 💾 Persistence
+### 💾 Persistent Storage
 
-* Wishlist stored in **LocalStorage** → data remains after refresh
+* All wishlist and cart states saved in **LocalStorage**
+* Auto-loaded on browser refresh
+
+---
+
+## 🧱 Architecture Overview
+
+```
+src/
+ ┣ components/
+ ┃ ┣ CartItem.jsx
+ ┃ ┣ Header.jsx
+ ┃ ┣ PurchaseSuccessful.jsx
+ ┃ ┣ ShoppingCart.jsx
+ ┃ ┣ WishItem.jsx
+ ┃ ┗ WishList.jsx
+ ┣ utilities/
+ ┃ ┣ OrderTotalProvider.jsx
+ ┃ ┣ ShoppingCartProvider.jsx
+ ┃ ┣ WishListDataProvider.jsx
+ ┃ ┗ WishListUIProvider.jsx
+ ┣ assets/
+ ┃ ┣ wishlist.png
+ ┃ ┣ shoppingcart.png
+ ┃ ┗ purchaseSuccessful.png
+ ┣ App.jsx
+ ┣ main.jsx
+ ┣ index.css
+ ┗ App.css
+```
+
+---
+
+## 📱 Screenshots
+
+<p align="center">
+  <img src="./src/assets/WishList.png" alt="Wishlist Screen" width="250"/>
+  <img src="./src/assets/ShoppingCart.png" alt="Shopping Cart" width="250"/>
+  <img src="./src/assets/PurchaseSuccessful.png" alt="Purchase Successful Popup" width="250"/>
+</p>
 
 ---
 
 ## ⚙️ Tech Stack
 
-* ⚛️ React (Hooks + Context API)
-* 🟨 JavaScript (ES6+)
-* 🧭 React Router DOM (routing)
-* 🎨 Basic CSS (can be extended with Tailwind/Material UI)
+* **React 18** (Hooks + Context API)
+* **React Router DOM** for routing
+* **Tailwind CSS** for styling
+* **LocalStorage** for persistence
 
 ---
 
 ## 🛠 Setup
 
 ```bash
-git clone https://github.com/kurk6455/react-assignment.git
-cd proj-notes-app-advanced
+git clone https://github.com/kurk6455/proj-04-shopping-cart-basic.git
+cd proj-04-shopping-cart-basic
 npm install
-npm start
+npm run dev
 ```
 
 ---
 
 ## 💡 Future Enhancements
 
-* 🖼 Product details page
-* ❤️ Favorite/like items
+* 🏷 Apply discount codes
+* ☁️ Cloud sync (Firebase / Supabase)
+* 🔔 Toast notifications
 * 💳 Payment gateway integration
-* 📦 Backend API for dynamic product fetching
 
 ---

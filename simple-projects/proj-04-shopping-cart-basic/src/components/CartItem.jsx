@@ -9,14 +9,19 @@ export const CartItem = ({ item }) => {
     const { increaseQuantity, decreaseQuantity, deleteItem } = shoppingCartContextValue.action;
 
     return (
-        <>
-            <img src={item.image} />
-            <div>Title - {item.title}</div>
-            <div>Price - {item.price}</div>
-            <button onClick={ () => increaseQuantity(item.id)}>+</button>
-            <div>{item.quantity}</div>
-            <button onClick={ () => decreaseQuantity(item.id)}>-</button>
-            <button onClick={ () => deleteItem(item.id)}>Delete</button>
-        </>
+
+        <div className="flex items-center gap-4 border-b py-3">
+            <img src={item.image} className="w-20 h-20 object-contain rounded" />
+            <div className="flex-1">
+                <div className="font-semibold">{item.title}</div>
+                <div className="text-lg text-gray-700 mb-2">₹{item.price}</div>
+                <div className="flex items-center gap-2">
+                    <button className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded" onClick={() => decreaseQuantity(item.id)}>-</button>
+                    <div className="w-8 text-center">{item.quantity}</div>
+                    <button className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded" onClick={() => increaseQuantity(item.id)}>+</button>
+                    <button className="ml-3 text-red-500 hover:text-red-700" onClick={() => deleteItem(item.id)}>Delete</button>
+                </div>
+            </div>
+        </div>
     )
 }

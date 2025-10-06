@@ -22,10 +22,10 @@ export const ShoppingCartProvider = ({ children }) => {
     }, [wishList])
 
 
-    //Display to catch errors
-    // useEffect(() => {
-    //     console.log(shoppingCart)
-    // }, [shoppingCart])
+    // Display to catch errors
+    useEffect(() => {
+        console.log(shoppingCart)
+    }, [shoppingCart])
 
 
     //utility function
@@ -52,6 +52,8 @@ export const ShoppingCartProvider = ({ children }) => {
     const deleteItem = useCallback((id) => {
         const newWishList = wishList.map(item => {
             if (item.id === id) {
+                console.log("INside deleteItem function ----> ")
+                console.log(item);
                 return { ...item, isCart: false, quantity: 1};
             }
             return item;
