@@ -1,6 +1,46 @@
 import { atom, selector } from "recoil"
 import { v4 as uuidv4 } from 'uuid';
 
+//LOCAL STORAGE EFFECT
+// https://recoiljs.org/docs/guides/atom-effects/#local-storage-persistence
+// const localStorageEffect = key => ({setSelf, onSet}) => {
+//   const savedValue = localStorage.getItem(key)
+//   if (savedValue != null) {
+//     setSelf(JSON.parse(savedValue));
+//   }
+
+//   onSet((newValue, _, isReset) => {
+//     isReset
+//       ? localStorage.removeItem(key)
+//       : localStorage.setItem(key, JSON.stringify(newValue));
+//   });
+// };
+
+// https://recoiljs.org/docs/guides/atom-effects/#asynchronous-setself
+const localStorageEffect = key => ({ setSelf, onSet, trigger }) => {
+    // If there's a persisted value - set it on load
+    const loadPersisted = async () => {
+        const savedValue = await localStorage.getItem(key);
+
+        if (savedValue != null) {
+            setSelf(JSON.parse(savedValue));
+        }
+    };
+
+    // Asynchronously set the persisted data
+    if (trigger === 'get') {
+        loadPersisted();
+    }
+
+    // Subscribe to state changes and persist them to localStorage
+    onSet((newValue, _, isReset) => {
+        isReset
+            ? localStorage.removeItem(key)
+            : localStorage.setItem(key, JSON.stringify(newValue));
+    });
+};
+
+// Atom and Selectors
 export const wishListState = atom({
     key: "wishListState",
     default: [
@@ -54,12 +94,15 @@ export const wishListState = atom({
             quantity: 1,
             isCart: false,
         },
+    ],
+    effects: [
+        localStorageEffect('wishlistdata'),
     ]
 })
 
 export const wishListBtnState = selector({
     key: "wishListBtnState",
-    get: ({get}) => {
+    get: ({ get }) => {
         const wishList = get(wishListState);
 
         let tempBtn = [];
@@ -72,25 +115,25 @@ export const wishListBtnState = selector({
 
 export const selectedTypeState = atom({
     key: "selectedTypeState",
-    default : "default"
+    default: "default"
 })
 
 export const filteredWishListState = selector({
     key: "filteredWishListState",
-    get: ({get}) => {
+    get: ({ get }) => {
         const wishList = get(wishListState);
         const selectedType = get(selectedTypeState);
 
-        const filteredWishList = wishList.filter( item => item.wishListType === selectedType);
+        const filteredWishList = wishList.filter(item => item.wishListType === selectedType);
         return filteredWishList;
     }
 })
 
 export const shoppingCartState = selector({
     key: "shoppingCartState",
-    get: ({get}) => {
+    get: ({ get }) => {
         const wishList = get(wishListState);
-        const cartList = wishList.filter( item => item.isCart);
+        const cartList = wishList.filter(item => item.isCart);
 
         return cartList;
     }
@@ -100,21 +143,21 @@ export const shoppingCartState = selector({
 
 export const orderTotalState = selector({
     key: "orderTotalState",
-    get : ({get}) => {
+    get: ({ get }) => {
         const cartList = get(shoppingCartState);
         let totalQuantity = 0, totalPrice = 0;
-        cartList.map( item => {
+        cartList.map(item => {
             totalQuantity += item.quantity;
             totalPrice += (item.price * item.quantity);
         });
 
         return { totalQuantity, totalPrice }
-    } 
+    }
 })
 
 
 
 export const purchaseState = atom({
-    key : "purchase",
-    default : false
+    key: "purchase",
+    default: false
 })
