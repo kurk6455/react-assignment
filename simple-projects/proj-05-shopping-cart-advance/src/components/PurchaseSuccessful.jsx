@@ -1,23 +1,22 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { orderTotalState, purchaseState, shoppingCartState, wishListState } from "../utilities/recoil_state";
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { orderTotalState, purchaseState, wishListIdState, wishListState } from "../utilities/recoil_state";
 
 
 export const PurchaseSuccessful = () => {
     console.log("Rendering <PurchaseSuccessful>");
 
     const { totalPrice } = useRecoilValue(orderTotalState);
-    const [wishList, setWishList] = useRecoilState(wishListState);
+    const wishListId = useRecoilValue(wishListIdState);
     const setPurchase = useSetRecoilState(purchaseState);
 
 
-    const purchaseSuccessfulFn = () => {
-        const newWishList = wishList.map(item => {
-            return { ...item, isCart: false, quantity: 1 };
+    const purchaseSuccessfulFn = useRecoilCallback(({ set }) => () => {
+        wishListId.forEach(id => {
+            set(wishListState(id), (prev) => ({ ...prev, isCart: false, quantity: 1 }))
         })
 
-        setWishList(newWishList);
         setPurchase(false);
-    }
+    })
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">

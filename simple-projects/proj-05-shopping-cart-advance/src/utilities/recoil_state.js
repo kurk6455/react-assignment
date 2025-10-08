@@ -1,114 +1,78 @@
-import { atom, selector } from "recoil"
-import { v4 as uuidv4 } from 'uuid';
+import { atom, atomFamily, selector } from "recoil"
 
-//LOCAL STORAGE EFFECT
-// https://recoiljs.org/docs/guides/atom-effects/#local-storage-persistence
-// const localStorageEffect = key => ({setSelf, onSet}) => {
-//   const savedValue = localStorage.getItem(key)
-//   if (savedValue != null) {
-//     setSelf(JSON.parse(savedValue));
-//   }
+//Data
+const wishList = [
+    {
+        wishListType: "default",
+        id: 1,
+        image:
+            "https://m.media-amazon.com/images/I/61pUul1oDlL._AC_SL1500_.jpg",
+        title: "Mechanical Gaming Keyboard",
+        price: 3499,
+        quantity: 1,
+        isCart: false,
+    },
+    {
+        wishListType: "BBDsale",
+        id: 2,
+        image:
+            "https://m.media-amazon.com/images/I/71TPda7cwUL._AC_SL1500_.jpg",
+        title: "Wireless Bluetooth Headphones",
+        price: 2599,
+        quantity: 1,
+        isCart: false,
+    },
+    {
+        wishListType: "BBDsale",
+        id: 3,
+        image:
+            "https://m.media-amazon.com/images/I/81vDZyJQ-4L._AC_SL1500_.jpg",
+        title: "Smartphone (128GB, 6GB RAM)",
+        price: 15999,
+        quantity: 1,
+        isCart: false,
+    },
+    {
+        wishListType: "FestivalSale",
+        id: 4,
+        image:
+            "https://m.media-amazon.com/images/I/71vFKBpKakL._AC_SL1500_.jpg",
+        title: "Laptop (Intel i5, 8GB RAM, 512GB SSD)",
+        price: 56990,
+        quantity: 1,
+        isCart: false,
+    },
+    {
+        wishListType: "default",
+        id: 5,
+        image:
+            "https://m.media-amazon.com/images/I/61NJyXc9l-L._AC_SL1500_.jpg",
+        title: "Smartwatch with AMOLED Display",
+        price: 4999,
+        quantity: 1,
+        isCart: false,
+    },
+]
 
-//   onSet((newValue, _, isReset) => {
-//     isReset
-//       ? localStorage.removeItem(key)
-//       : localStorage.setItem(key, JSON.stringify(newValue));
-//   });
-// };
 
-// https://recoiljs.org/docs/guides/atom-effects/#asynchronous-setself
-const localStorageEffect = key => ({ setSelf, onSet, trigger }) => {
-    // If there's a persisted value - set it on load
-    const loadPersisted = async () => {
-        const savedValue = await localStorage.getItem(key);
+//Atoms and Selectors
+export const wishListIdState = atom({
+    key: "wishListIdState",
+    default: wishList.map(item => item.id)
+})
 
-        if (savedValue != null) {
-            setSelf(JSON.parse(savedValue));
-        }
-    };
 
-    // Asynchronously set the persisted data
-    if (trigger === 'get') {
-        loadPersisted();
-    }
-
-    // Subscribe to state changes and persist them to localStorage
-    onSet((newValue, _, isReset) => {
-        isReset
-            ? localStorage.removeItem(key)
-            : localStorage.setItem(key, JSON.stringify(newValue));
-    });
-};
-
-// Atom and Selectors
-export const wishListState = atom({
+export const wishListState = atomFamily({
     key: "wishListState",
-    default: [
-        {
-            wishListType: "default",
-            id: uuidv4(),
-            image:
-                "https://m.media-amazon.com/images/I/61pUul1oDlL._AC_SL1500_.jpg",
-            title: "Mechanical Gaming Keyboard",
-            price: 3499,
-            quantity: 1,
-            isCart: false,
-        },
-        {
-            wishListType: "BBDsale",
-            id: uuidv4(),
-            image:
-                "https://m.media-amazon.com/images/I/71TPda7cwUL._AC_SL1500_.jpg",
-            title: "Wireless Bluetooth Headphones",
-            price: 2599,
-            quantity: 1,
-            isCart: false,
-        },
-        {
-            wishListType: "BBDsale",
-            id: uuidv4(),
-            image:
-                "https://m.media-amazon.com/images/I/81vDZyJQ-4L._AC_SL1500_.jpg",
-            title: "Smartphone (128GB, 6GB RAM)",
-            price: 15999,
-            quantity: 1,
-            isCart: false,
-        },
-        {
-            wishListType: "FestivalSale",
-            id: uuidv4(),
-            image:
-                "https://m.media-amazon.com/images/I/71vFKBpKakL._AC_SL1500_.jpg",
-            title: "Laptop (Intel i5, 8GB RAM, 512GB SSD)",
-            price: 56990,
-            quantity: 1,
-            isCart: false,
-        },
-        {
-            wishListType: "default",
-            id: uuidv4(),
-            image:
-                "https://m.media-amazon.com/images/I/61NJyXc9l-L._AC_SL1500_.jpg",
-            title: "Smartwatch with AMOLED Display",
-            price: 4999,
-            quantity: 1,
-            isCart: false,
-        },
-    ],
-    effects: [
-        localStorageEffect('wishlistdata'),
-    ]
+    default: (id) => wishList.find( item => item.id === id) ?? {}
 })
 
 export const wishListBtnState = selector({
     key: "wishListBtnState",
     get: ({ get }) => {
-        const wishList = get(wishListState);
+        const wishListId = get(wishListIdState);
 
-        let tempBtn = [];
-        wishList.map(item => {
-            tempBtn.push(item.wishListType);
-        })
+        const tempBtn = wishListId.map( id => get(wishListState(id)).wishListType);
         return [...new Set(tempBtn)];
     }
 })
@@ -121,24 +85,25 @@ export const selectedTypeState = atom({
 export const filteredWishListState = selector({
     key: "filteredWishListState",
     get: ({ get }) => {
-        const wishList = get(wishListState);
+        const wishListId = get(wishListIdState);
         const selectedType = get(selectedTypeState);
 
-        const filteredWishList = wishList.filter(item => item.wishListType === selectedType);
-        return filteredWishList;
+        return wishListId
+        .map( id => get(wishListState(id)))
+        .filter(item => item && item.wishListType === selectedType)
     }
 })
 
 export const shoppingCartState = selector({
     key: "shoppingCartState",
     get: ({ get }) => {
-        const wishList = get(wishListState);
-        const cartList = wishList.filter(item => item.isCart);
-
-        return cartList;
+        const wishListId = get(wishListIdState);
+        
+        return wishListId
+        .map( id => get(wishListState(id)))
+        .filter( item => item && item.isCart)
     }
 })
-
 
 
 export const orderTotalState = selector({
@@ -146,7 +111,7 @@ export const orderTotalState = selector({
     get: ({ get }) => {
         const cartList = get(shoppingCartState);
         let totalQuantity = 0, totalPrice = 0;
-        cartList.map(item => {
+        cartList.forEach(item => {
             totalQuantity += item.quantity;
             totalPrice += (item.price * item.quantity);
         });
@@ -154,7 +119,6 @@ export const orderTotalState = selector({
         return { totalQuantity, totalPrice }
     }
 })
-
 
 
 export const purchaseState = atom({
